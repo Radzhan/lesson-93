@@ -15,7 +15,7 @@ export class Album {
   year: number;
 
   @Prop()
-  image: string;
+  image: string | null;
 }
 
 export const AlbumSchema = SchemaFactory.createForClass(Album);
