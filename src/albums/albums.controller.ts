@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,13 +23,23 @@ export class AlbumsController {
   ) {}
 
   @Get()
-  async getAll() {
-    return this.albumModel.find();
+  async getAll(@Query() query: { artist: string }) {
+    if (query.artist === undefined) {
+      return this.albumModel.find();
+    } else {
+      return this.albumModel.find({ artist: query.artist });
+    }
   }
 
   @Get('/:id')
   async getOne(@Param('id') id: string) {
     return this.albumModel.find({ _id: id });
+  }
+
+  @Delete('/:id')
+  async deleteOne(@Param('id') id: string) {
+    this.albumModel.deleteOne({ _id: id });
+    return { message: 'Object was deleted' };
   }
 
   @Post()

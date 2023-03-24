@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -28,6 +29,12 @@ export class ArtistsController {
   @Get('/:id')
   async getOne(@Param('id') id: string) {
     return this.artistModel.find({ _id: id });
+  }
+
+  @Delete('/:id')
+  async deleteOne(@Param('id') id: string) {
+    this.artistModel.deleteOne({ _id: id });
+    return { message: 'Object was deleted' };
   }
 
   @Post()
