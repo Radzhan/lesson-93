@@ -11,6 +11,8 @@ import { TracksController } from './tracks/tracks.controller';
 import { UsersController } from './users/users.controller';
 import { User, UserSchema } from './users/user.schema';
 import { AuthService } from './auth/auth.service';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './auth/local.strategy';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { AuthService } from './auth/auth.service';
     MongooseModule.forFeature([{ name: Album.name, schema: AlbumSchema }]),
     MongooseModule.forFeature([{ name: Track.name, schema: TrackSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    PassportModule,
   ],
   controllers: [
     AppController,
@@ -28,6 +31,6 @@ import { AuthService } from './auth/auth.service';
     TracksController,
     UsersController,
   ],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, LocalStrategy],
 })
 export class AppModule {}
