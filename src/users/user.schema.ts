@@ -29,6 +29,9 @@ export class User {
 
   @Prop()
   displayName: string;
+
+  @Prop({ required: true, default: 'user', enum: ['user', 'admin'] })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

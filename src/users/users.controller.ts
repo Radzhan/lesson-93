@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  ExecutionContext,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Request } from 'express';
 import { User, UserDocument } from './user.schema';
@@ -19,7 +27,6 @@ export class UsersController {
     });
 
     user.generateToken();
-
     return user.save();
   }
 
@@ -33,5 +40,32 @@ export class UsersController {
   @Get('secret')
   async secret(@Req() req: Request) {
     return req.user;
+  }
+
+  @Delete('sessions')
+  async deleteOne(context: ExecutionContext) {
+    try {
+      const request = context.switchToHttp().getRequest();
+
+      const token = request.get('Authorization');
+
+      const success = { message: 'OK' };
+
+      if (!token) {
+        return success;
+      }
+
+      const user = await this.userModel.findOne({ token });
+
+      if (!user) {
+        return success;
+      }
+
+      user.generateToken();
+      await user.save();
+      return success;
+    } catch (e) {
+      return e;
+    }
   }
 }
