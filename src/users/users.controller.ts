@@ -12,7 +12,7 @@ import { Request } from 'express';
 import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
-import { TokenAuthGuard } from '../token-auth/token-auth.guard';
+import { TokenAuthGuard } from '../auth/token-auth.guard';
 
 @Controller('users')
 export class UsersController {
